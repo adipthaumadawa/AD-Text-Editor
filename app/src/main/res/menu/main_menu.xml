@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_undo"
+        android:title="Undo"
+        android:icon="@android:drawable/ic_menu_revert"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_redo"
+        android:title="Redo"
+        android:icon="@android:drawable/ic_menu_send"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_search"
+        android:title="Find &amp; Replace"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_save"
+        android:title="Save"
+        app:showAsAction="ifRoom" />
+
+    <item
+        android:id="@+id/action_new"
+        android:title="New File"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_save_as"
+        android:title="Save As..."
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_history"
+        android:title="Version History"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_toggle_wrap"
+        android:title="Toggle Word Wrap"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_toggle_readonly"
+        android:title="Toggle Read-Only"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_markdown_preview"
+        android:title="Markdown Preview"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/action_delete"
+        android:title="Delete File"
+        app:showAsAction="never" />
+</menu>
