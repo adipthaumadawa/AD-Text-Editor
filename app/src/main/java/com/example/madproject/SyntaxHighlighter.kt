@@ -24,7 +24,8 @@ class SyntaxHighlighter(private val context: Context) : TextWatcher {
 
     private val keywordPattern by lazy { Pattern.compile("\\b(" + kotlinKeywords.joinToString("|") + ")\\b") }
     private val stringPattern = Pattern.compile("\".*?\"")
-    private val commentPattern = Pattern.compile("//.*|/\\*.*?\\*/", Pattern.DOTALL)
+    private val singleLineCommentPattern = Pattern.compile("//.*")
+    private val multiLineCommentPattern = Pattern.compile("/\\*.*?\\*/", Pattern.DOTALL)
     private val markdownHeaderPattern = Pattern.compile("^#+.*", Pattern.MULTILINE)
     private val markdownBoldPattern = Pattern.compile("\\*\\*.*?\\*\\*|__.*?__")
 
@@ -50,7 +51,8 @@ class SyntaxHighlighter(private val context: Context) : TextWatcher {
         highlight(s, stringPattern, Color.parseColor("#008000")) // Green
         
         // Highlight Comments
-        highlight(s, commentPattern, Color.GRAY)
+        highlight(s, singleLineCommentPattern, Color.GRAY)
+        highlight(s, multiLineCommentPattern, Color.GRAY)
 
         // Basic Markdown Highlighting
         highlight(s, markdownHeaderPattern, Color.parseColor("#800080")) // Purple
