@@ -30,6 +30,11 @@ class SyntaxHighlighter(private val context: Context) : TextWatcher {
     private val markdownBoldPattern = Pattern.compile("\\*\\*.*?\\*\\*|__.*?__")
 
     private var isHighlighting = false
+    private var isKotlinFile = false
+
+    fun setKotlinMode(enabled: Boolean) {
+        isKotlinFile = enabled
+    }
 
     override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
@@ -44,17 +49,19 @@ class SyntaxHighlighter(private val context: Context) : TextWatcher {
             s.removeSpan(span)
         }
 
-        // Highlight Kotlin Keywords
-        highlight(s, keywordPattern, Color.BLUE)
-        
-        // Highlight Strings
-        highlight(s, stringPattern, Color.parseColor("#008000")) // Green
-        
-        // Highlight Comments
-        highlight(s, singleLineCommentPattern, Color.GRAY)
-        highlight(s, multiLineCommentPattern, Color.GRAY)
+        if (isKotlinFile) {
+            // Highlight Kotlin Keywords
+            highlight(s, keywordPattern, Color.BLUE)
+            
+            // Highlight Strings
+            highlight(s, stringPattern, Color.parseColor("#008000")) // Green
+            
+            // Highlight Comments
+            highlight(s, singleLineCommentPattern, Color.GRAY)
+            highlight(s, multiLineCommentPattern, Color.GRAY)
+        }
 
-        // Basic Markdown Highlighting
+        // Basic Markdown Highlighting (Always active as it's a text editor)
         highlight(s, markdownHeaderPattern, Color.parseColor("#800080")) // Purple
         highlight(s, markdownBoldPattern, Color.RED)
 

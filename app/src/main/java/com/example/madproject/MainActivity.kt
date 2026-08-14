@@ -36,6 +36,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var versionRepo: VersionRepository
     
     private lateinit var undoRedoManager: UndoRedoManager
+    private lateinit var syntaxHighlighter: SyntaxHighlighter
     private val autoSaveHandler = Handler(Looper.getMainLooper())
     private val AUTO_SAVE_INTERVAL = 10000L // 10 seconds
 
@@ -64,7 +65,8 @@ class MainActivity : AppCompatActivity() {
         loadRecentFilesFromPrefs()
 
         // Setup Highlighter
-        editorEditText.addTextChangedListener(SyntaxHighlighter(this))
+        syntaxHighlighter = SyntaxHighlighter(this)
+        editorEditText.addTextChangedListener(syntaxHighlighter)
         
         // Setup Undo/Redo
         undoRedoManager = UndoRedoManager(editorEditText)
@@ -265,6 +267,7 @@ class MainActivity : AppCompatActivity() {
         undoRedoManager.reset("")
         isReadOnly = false
         applyReadOnlyState()
+        syntaxHighlighter.setKotlinMode(false) // Disable for new files until saved as .kt
         Toast.makeText(this, "New file created", Toast.LENGTH_SHORT).show()
     }
 
@@ -303,6 +306,12 @@ class MainActivity : AppCompatActivity() {
             val savedVersion = versionRepo.saveVersion(file, content)
             currentFile = file
             toolbar.title = file.name
+            
+            // Check extension and update highlighter mode
+            syntaxHighlighter.setKotlinMode(file.name.endsWith(".kt", ignoreCase = true))
+            // Force re-highlight
+            editorEditText.setText(editorEditText.text) 
+
             addToRecentFiles(file)
             Toast.makeText(this@MainActivity, "Saved ${savedVersion.versionName}", Toast.LENGTH_SHORT).show()
             
@@ -314,6 +323,10 @@ class MainActivity : AppCompatActivity() {
     private fun openFile(file: File) {
         if (file.exists()) {
             val content = FileManager.readFile(file)
+            
+            // Set highlighter mode before setting text
+            syntaxHighlighter.setKotlinMode(file.name.endsWith(".kt", ignoreCase = true))
+
             editorEditText.setText(content)
             currentFile = file
             toolbar.title = file.name
